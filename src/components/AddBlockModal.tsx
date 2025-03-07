@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+// src/components/AddBlockModal.tsx
+import { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 import { usePasswordStore } from '../store/passwordStore';
 import { useRoleStore } from '../store/roleStore';
 import useAuthStore from '../store/authStore';
-import { PasswordEntry } from '../types';
+import { PasswordEntry } from '../types'; // Uklonite PasswordBlock iz importa
 
 interface AddBlockModalProps {
   isOpen: boolean;
@@ -13,7 +14,7 @@ interface AddBlockModalProps {
 export default function AddBlockModal({ isOpen, onClose }: AddBlockModalProps) {
   const [title, setTitle] = useState('');
   const [entries, setEntries] = useState<PasswordEntry[]>([
-    { link: '', username: '', password: '', accessLevels: [] }
+    { id: crypto.randomUUID(), title: '', link: '', username: '', password: '', accessLevels: [], blockId: '' }
   ]);
 
   const { addBlock } = usePasswordStore();
@@ -21,7 +22,7 @@ export default function AddBlockModal({ isOpen, onClose }: AddBlockModalProps) {
   const user = useAuthStore((state) => state.user);
 
   const handleAddEntry = () => {
-    setEntries([...entries, { link: '', username: '', password: '', accessLevels: [] }]);
+    setEntries([...entries, { id: crypto.randomUUID(), title: '', link: '', username: '', password: '', accessLevels: [], blockId: '' }]);
   };
 
   const handleRemoveEntry = (index: number) => {
@@ -56,10 +57,11 @@ export default function AddBlockModal({ isOpen, onClose }: AddBlockModalProps) {
         title,
         entries,
         createdBy: user.id,
+        accessLevels: [], // Dodajte ovo
       });
       onClose();
       setTitle('');
-      setEntries([{ link: '', username: '', password: '', accessLevels: [] }]);
+      setEntries([{ id: crypto.randomUUID(), title: '', link: '', username: '', password: '', accessLevels: [], blockId: '' }]);
     }
   };
 

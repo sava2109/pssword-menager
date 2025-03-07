@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// src/components/Dashboard.tsx
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import { usePasswordStore } from '../store/passwordStore';

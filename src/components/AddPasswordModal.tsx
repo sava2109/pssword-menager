@@ -1,7 +1,9 @@
+// src/components/AddPasswordModal.tsx
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { usePasswordStore } from '../store/passwordStore';
 import useAuthStore from '../store/authStore';
+import { PasswordEntry } from '../types';
 
 interface AddPasswordModalProps {
   isOpen: boolean;
@@ -9,15 +11,16 @@ interface AddPasswordModalProps {
 }
 
 export default function AddPasswordModal({ isOpen, onClose }: AddPasswordModalProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<PasswordEntry, 'id'>>({
     title: '',
+    link: '',
     username: '',
     password: '',
-    category: '',
-    accessLevel: 'green',
+    accessLevels: [],
+    blockId: '',
   });
 
-  const { addPassword, categories } = usePasswordStore();
+  const { addPassword } = usePasswordStore();
   const user = useAuthStore((state) => state.user);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,16 +28,9 @@ export default function AddPasswordModal({ isOpen, onClose }: AddPasswordModalPr
     if (user) {
       addPassword({
         ...formData,
-        createdBy: user.id,
+        blockId: 'someBlockId', // Dodajte ovo
       });
       onClose();
-      setFormData({
-        title: '',
-        username: '',
-        password: '',
-        category: '',
-        accessLevel: 'green',
-      });
     }
   };
 
@@ -63,6 +59,17 @@ export default function AddPasswordModal({ isOpen, onClose }: AddPasswordModalPr
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-700">Link</label>
+            <input
+              type="text"
+              required
+              value={formData.link}
+              onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-gray-700">Username</label>
             <input
               type="text"
@@ -82,37 +89,6 @@ export default function AddPasswordModal({ isOpen, onClose }: AddPasswordModalPr
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Category</label>
-            <select
-              required
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            >
-              <option value="">Select a category</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Access Level</label>
-            <select
-              required
-              value={formData.accessLevel}
-              onChange={(e) => setFormData({ ...formData, accessLevel: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            >
-              <option value="green">Green</option>
-              <option value="yellow">Yellow</option>
-              <option value="red">Red</option>
-            </select>
           </div>
 
           <div className="flex justify-end space-x-3 mt-6">

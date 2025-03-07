@@ -1,4 +1,4 @@
-import React from 'react';
+// src/components/PasswordBlock.tsx
 import { Link, Lock, User, Edit } from 'lucide-react';
 import { PasswordBlock as PasswordBlockType } from '../types';
 import useAuthStore from '../store/authStore';

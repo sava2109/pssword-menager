@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// src/components/CopyButton.tsx
+import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { copyToClipboard } from '../utils/clipboard';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+// src/components/CategoryCard.tsx
 import { Folder } from 'lucide-react';
 import { Category, PasswordEntry } from '../types';
 

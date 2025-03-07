@@ -1,3 +1,4 @@
+// src/components/AssignBlockModal.tsx
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { usePasswordStore } from '../store/passwordStore';
